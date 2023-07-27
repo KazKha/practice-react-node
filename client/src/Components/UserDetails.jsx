@@ -27,6 +27,7 @@ const UserDetails = () => {
             {
                 singleData.map((items, index) => {
                     return(<ul key ={index}>
+                        
                         <li>Name  :  {items.firstName} {items.lastName} </li> 
                         <li>Email :  {items.email}  </li>
                         <li>Phone : {items.contactNumber}</li>  
