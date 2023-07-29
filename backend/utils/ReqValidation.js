@@ -1,7 +1,10 @@
 const emailRegex =/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/;
 const onlyChar = /^(\s{0,1}[A-Za-z])+$/;
-const onlyNum = /^\d{10}$/;
-
+const onlyNum  = /^\d{10}$/;
+const response =  {
+    res_code , 
+    res_msg , 
+} 
 const ValidateEmail = (email) => {
   
   if (!email || !emailRegex.test(email)) return false;
@@ -16,6 +19,10 @@ const ValidateMobiles = (Mobile) => {
 };
 
 const ValidateName = (Name) => {
+
+  if (!onlyChar.test(Name)) return false;
+};
+const GenrateResposne = (  ) => {
 
   if (!onlyChar.test(Name)) return false;
 };
