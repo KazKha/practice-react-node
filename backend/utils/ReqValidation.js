@@ -6,7 +6,9 @@ const ValidateEmail = (email) => {
   if (!email || !emailRegex.test(email)) return false;
 };
 
-const ValidatePassword = (password) => {};
+const ValidateEmpCode = (empCode) => {
+  if (!empCode || !/^\d{4}$/.test(empCode)) return false;
+};
 
 const ValidateMobiles = (Mobile) => {
   if (!onlyNum.test(Mobile)) return false;
@@ -29,6 +31,7 @@ const apiResponseMessage = (resMsg) => {
     '109': "Successfully Logout",
     '110': "Invalidd Phone Number",
     '111': "Phone Number is Required",
+    '112': "Invalid Emp Code Or Worng  Code Enter ",
     
     'ERR': "Something Went Wrong",
   };
@@ -39,6 +42,6 @@ module.exports = {
   ValidateEmail,
   ValidateName,
   apiResponseMessage,
-  ValidatePassword,
+  ValidateEmpCode,
   ValidateMobiles,
 };

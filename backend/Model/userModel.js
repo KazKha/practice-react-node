@@ -1,14 +1,32 @@
- const db = require('../utils/mysql_config');
+const { mysqlDbConn } = require("../utils/mysql_config");
+//const mysqlDbConn = mysql.createConnection( db_congig );
 
+const authenticateUser = async (param) => {
+  try {
+    const authQuery = `SELECT * FROM employees`;
+    //WHERE email = ? and employeeNumber = ?
 
-  const authenticateUser = async (...param) => {
+    const EmpQueryParam = [param.email, param.empCode]; //EmpQueryParam
 
-    const authQuery = await db.query('SELECT * FROM users WHERE email = ? and Passw', [email]);
+    mysqlDbConn.query(
+      `SELECT * FROM employees`,
+      [param.email, param.empCode],
+      (err, returnData, fields) => {
+        if (err) console.log(" error in query -> " + err.message);
 
-    mysqlDbConn.query(EmpQuery, EmpQueryParam, (err, returnData , fields) => {
-
-        console.log(returnData)
-        console.log(returnData.length)
-    
-    });
+        console.log(returnData);
+        console.log(returnData.length);
+      }
+    );
+  } catch (error) {
+    console.error("Error executing query:", error);
+    return null;
+    mysqlDbConn.end();
   }
+};
+
+authenticateUser({ empCode: "1002", email: "kazkha@gmail.com" });
+
+module.exports = {
+  authenticateUser,
+};

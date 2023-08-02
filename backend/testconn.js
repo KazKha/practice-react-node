@@ -6,14 +6,14 @@ const http      = require('http');
 
 
 const mysql     = require('mysql');
-const db_congig = require('./utils/mysql_config')
+const {db_congig , mysqlDbConn} = require('./utils/mysql_config')
 
-const mysqlDbConn = mysql.createConnection( db_congig );
+//const mysqlDbConn = mysql.createConnection( db_congig );
 
-let EmpQuery = 'SELECT * FROM `orders` where customerNumber = ? ';
-let EmpQueryParam = [ 119 ];
+let EmpQueryParam =`kazkha@gmail.com` ;
+let EmpQuery = `SELECT * FROM employees where email = ${EmpQueryParam} `;
 
-mysqlDbConn.query(EmpQuery, EmpQueryParam, (err, returnData , fields) => {
+mysqlDbConn.query(EmpQuery, (err, returnData , fields) => {
     if(err) console.log( ' eeror in query -> '+ err.message)
     
 

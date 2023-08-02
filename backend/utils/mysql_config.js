@@ -8,6 +8,16 @@ const db_congig = {
   database: 'test'
 };
 
-const mysqlDbConn = mysql.createConnection(db_congig);
+const connectMysql = mysql.createConnection(db_congig);
+const mysqlDbConn = connectMysql.connect( (err) => {
+  if (err) {
+    return console.error('error: ' + err.message);
+  }
+})
 
-module.exports = mysqlDbConn;
+
+module.exports = {
+  mysqlDbConn,
+  db_congig
+
+}
