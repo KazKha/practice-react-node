@@ -1,6 +1,6 @@
 // const bcrypt = require("bcrypt");
 // const jwt    = require("jsonwebtoken");
-const apiRes = { code: 500, status: "fail" };
+const apiRes = { code: 400, status: "fail" };
 
 const {
   ValidateEmail,
@@ -26,6 +26,7 @@ const login = (req, res) => {
     }
     res.status(201).json(req.body);
   } catch (error) {
+    apiRes.message = apiResponseMessage("ERR");
     res.status(500).send({ apiRes });
   }
 };

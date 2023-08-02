@@ -27,8 +27,10 @@ const apiResponseMessage = (resMsg) => {
     '107': "Invalid Credentials",
     '108': "Successfully Login",
     '109': "Successfully Logout",
-    '110': "Invalid Phone Number",
+    '110': "Invalidd Phone Number",
     '111': "Phone Number is Required",
+    
+    'ERR': "Something Went Wrong",
   };
   return messege[resMsg];
 };
