@@ -1,32 +1,34 @@
-const { mysqlDbConn } = require("../utils/mysql_config");
+const  {connection}  = require("../utils/mysql_config");
+const returnResposne ={};
 //const mysqlDbConn = mysql.createConnection( db_congig );
+
 
 const authenticateUser = async (param) => {
   try {
-    const authQuery = `SELECT * FROM employees`;
-    //WHERE email = ? and employeeNumber = ?
+    const authQuery = `SELECT * FROM employees WHERE email = ? and employeeNumber = ?`;
 
     const EmpQueryParam = [param.email, param.empCode]; //EmpQueryParam
 
-    mysqlDbConn.query(
-      `SELECT * FROM employees`,
-      [param.email, param.empCode],
+    connection.query(
+      authQuery,
+      EmpQueryParam,
       (err, returnData, fields) => {
         if (err) console.log(" error in query -> " + err.message);
 
-        console.log(returnData);
-        console.log(returnData.length);
-      }
-    );
+         return "kazim";
+        if(returnData.length == 1) return JSON.stringify(returnData);
+        
+        return false;   
+    }); 
+    
   } catch (error) {
     console.error("Error executing query:", error);
     return null;
-    mysqlDbConn.end();
+    connection.end();
   }
 };
 
-authenticateUser({ empCode: "1002", email: "kazkha@gmail.com" });
 
-module.exports = {
-  authenticateUser,
-};
+
+module.exports = authenticateUser
+

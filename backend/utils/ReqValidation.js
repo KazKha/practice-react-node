@@ -34,6 +34,7 @@ const apiResponseMessage = (resMsg) => {
     '112': "Invalid Emp Code Or Worng  Code Enter ",
     
     'ERR': "Something Went Wrong",
+    
   };
   return messege[resMsg];
 };
