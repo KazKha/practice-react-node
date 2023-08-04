@@ -16,9 +16,9 @@ connection.connect((err) => {
     console.error('Error connecting to MySQL database:', err);
     return;
   }
-  console.log('Connected to MySQL database');
+  console.log('Connected to MySQL database ' + connection.threadId) ;
 });
-
+  
 async function query(sql, params) {
   
   const [results, ] = await connection.execute(sql, params);

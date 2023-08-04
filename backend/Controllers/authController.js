@@ -23,9 +23,9 @@ const    login = async (req, res) => {
       return res.status(400).send({ apiRes });
     }
 
-    const useAuthentication =  await authenticateUser(req.body.testapp);
+    const useAuthentication =   authenticateUser(req.body.testapp);
     console.log(useAuthentication);
-    if( !useAuthentication){ 
+    if( useAuthentication){ 
       apiRes.status = 'susess';
       apiRes.message = apiResponseMessage("108");
       apiRes.code = 200;
@@ -35,7 +35,7 @@ const    login = async (req, res) => {
     }
     apiRes.message = apiResponseMessage("107");
 
-    returnres.status(404).send({ apiRes });
+    res.status(404).send({ apiRes });
   } catch (error) {
      console.log(error)
     apiRes.message = apiResponseMessage("ERR");
