@@ -10,13 +10,18 @@ const db_config = {
   database: process.env.DB_DATABASE,
 };
 
+ const param = { empCode: '1002', email: 'kazkha@gmail.com' };
+
 console.log(db_config);
 const mysqlDbConn = mysql.createConnection(db_config);
 
-let EmpQuery = "SELECT * FROM `orders` where customerNumber = 119 ";
-let EmpQueryParam = [119];
+//let EmpQuery = "SELECT * FROM `orders` where customerNumber = 119 ";
+//let EmpQuery = `SELECT * FROM employees WHERE email = ${param.email} and employeeNumber = ${param.empCode}`;
+let EmpQuery = `SELECT * FROM employees WHERE email = ? and employeeNumber = ?`;
+//let EmpQueryParam = [119];
+const EmpQueryParam = [param.email, param.empCode]; //EmpQueryParam
 
-mysqlDbConn.query(EmpQuery, (err, returnData, fields) => {
+mysqlDbConn.query(EmpQuery, EmpQueryParam, (err, returnData, fields) => {
   if (err) console.log(" eeror in query -> " + err);
 
 

@@ -31,5 +31,5 @@ async function query(sql, params) {
 
 module.exports = {
   connection,
-  query
+  connectionConfig
 }

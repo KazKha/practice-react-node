@@ -32,8 +32,10 @@ const apiResponseMessage = (resMsg) => {
     '110': "Invalidd Phone Number",
     '111': "Phone Number is Required",
     '112': "Invalid Emp Code Or Worng  Code Enter ",
+    '113': "Invalid Token entered",
     
     'ERR': "Something Went Wrong",
+    'AUTH': " Invalld Authorization",
     
   };
   return messege[resMsg];
