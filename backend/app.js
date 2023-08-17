@@ -10,5 +10,5 @@ app.use(bodyParser.json());
 app.use("/api",  authRoutes);
 
 app.listen(PORT, () => {
-  console.log("Servber Is Connected");
+  console.log(`Server Is Connected on port  : ${PORT}`);
 });

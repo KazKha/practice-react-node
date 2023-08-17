@@ -1,7 +1,6 @@
 // const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const apiRes = { code: 400, status: "fail" };
 const { authenticateUser, getDetails } = require("../Model/userModel");
 const secretKey = process.env.JWT_SECRET;
 const {
@@ -13,6 +12,7 @@ const {
 } = require("../utils/ReqValidation");
 
 const login = async (req, res) => {
+  let apiRes ={};
   try {
     if (ValidateEmail(req.body.testapp.email) == false) {
       apiRes.message = apiResponseMessage("101");
@@ -23,9 +23,9 @@ const login = async (req, res) => {
       return res.status(400).send({ apiRes });
     }
     const bodyReq = req.body.testapp;
-
+    
     const useAuthentication = await authenticateUser(bodyReq);
-
+    
     if (typeof useAuthentication === `object`) {
       const payload = {
         name: useAuthentication.firstName + " " + useAuthentication.lastName,
@@ -34,7 +34,7 @@ const login = async (req, res) => {
       };
       let tokenKey = jwt.sign(payload, secretKey, {
         algorithm: "HS256",
-        expiresIn: "1m",
+        expiresIn: "20m",
       });
       apiRes.status = "sucess";
       apiRes.message = apiResponseMessage("108");
@@ -45,8 +45,7 @@ const login = async (req, res) => {
     }
     apiRes.message = apiResponseMessage("107");
     return res.status(500).send({ apiRes });
-
-    res.status(404).send({ apiRes });
+    
   } catch (error) {
     console.log("----->");
     console.log(error);
@@ -56,6 +55,7 @@ const login = async (req, res) => {
 };
 
 const getUserDetails = async (req, res) => {
+  let apiRes ={};
   try {
     if (ValidateEmpCode(req.empCode) == false) {
       apiRes.message = apiResponseMessage("112");

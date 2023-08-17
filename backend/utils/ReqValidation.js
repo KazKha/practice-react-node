@@ -1,3 +1,4 @@
+const { connection, connectionConfig } = require("../utils/mysql_config");
 const emailRegex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/;
 const onlyChar = /^(\s{0,1}[A-Za-z])+$/;
 const onlyNum = /^\d{10}$/;
@@ -5,6 +6,8 @@ const onlyNum = /^\d{10}$/;
 const ValidateEmail = (email) => {
   if (!email || !emailRegex.test(email)) return false;
 };
+
+
 
 const ValidateEmpCode = (empCode) => {
   if (!empCode || !/^\d{4}$/.test(empCode)) return false;
@@ -17,8 +20,21 @@ const ValidateMobiles = (Mobile) => {
 const ValidateName = (Name) => {
   if (!onlyChar.test(Name)) return false;
 };
+const checkAlreadyExist = (tables , fieldsName , condition) => {
 
-const apiResponseMessage = (resMsg) => {
+  var authQuery = `SELECT ${feildsName} FROM ${tables} `;
+   if(condition){
+    authQuery += `WHERE ${condition}`;  
+   }
+  console.log(authQuery)
+  connection.query(authQuery,  (error, returnData, fields) => {
+    
+    console.log(returnData);
+  
+  });
+};
+
+const apiResponseMessage = (resMsg, fieldName) => {
   const messege = {
     '101': "Invalid Email Id",
     '102': "Email-id Already Exist",
@@ -33,6 +49,7 @@ const apiResponseMessage = (resMsg) => {
     '111': "Phone Number is Required",
     '112': "Invalid Emp Code Or Worng  Code Enter ",
     '113': "Invalid Token entered",
+    '114': `${fieldName} is mandatery`,
     
     
     'ERR': "Something Went Wrong",
@@ -50,4 +67,5 @@ module.exports = {
   apiResponseMessage,
   ValidateEmpCode,
   ValidateMobiles,
+  checkAlreadyExist
 };

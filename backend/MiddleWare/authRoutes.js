@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { login, getUserDetails } = require("../Controllers/authController");
+const  updateProfile  = require("../Controllers/updateProfile");
 const router = express.Router();
 const secretKey = process.env.JWT_SECRET;
 const apiRes = { code: 400, status: "fail" };
@@ -35,12 +36,8 @@ const verifyToken = (req, res, next) => {
       
 };
 
-
-
-
-
-
 router.post("/login", login);
 router.get("/user-detail", verifyToken, getUserDetails);
+router.post("/update-user", verifyToken, updateProfile);
 
 module.exports = router;
