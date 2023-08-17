@@ -34,8 +34,11 @@ const apiResponseMessage = (resMsg) => {
     '112': "Invalid Emp Code Or Worng  Code Enter ",
     '113': "Invalid Token entered",
     
+    
     'ERR': "Something Went Wrong",
-    'AUTH': " Invalld Authorization",
+    'AUTH': "Invalld Authorization",
+    'F': "Failed",
+    'S': "Success",
     
   };
   return messege[resMsg];

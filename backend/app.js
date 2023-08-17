@@ -3,28 +3,11 @@ const express = require("express");
 const app = express();
 
 const authRoutes = require('./MiddleWare/authRoutes');
-
- 
-
-
-// const {
-//   ValidateEmail,
-//   ValidateName,
-//   apiResponseMessage,
-//   ValidatePassword,
-//   ValidateMobiles
-
-// } = require("./utils/ReqValidation");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT;
 app.use(bodyParser.json());
 
-app.use("/auth",  authRoutes);
-
-
-
-
-
+app.use("/api",  authRoutes);
 
 app.listen(PORT, () => {
   console.log("Servber Is Connected");

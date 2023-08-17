@@ -11,8 +11,8 @@ const authenticateUser = (param) => {
       if (error) {
         reject(error);
       } else {
-        let resposneData =[];
-       
+        let resposneData = [];
+
         resolve(returnData[0]);
         if (returnData.length == 1 && Array.isArray(returnData)) {
           let val = Object.values(JSON.parse(JSON.stringify(returnData)));
@@ -20,7 +20,7 @@ const authenticateUser = (param) => {
             resposneData.push(val[index]);
           }
         }
-        resposneData.length > 0 ?  resolve(resposneData[0]) : reject(false);
+        resposneData.length > 0 ? resolve(resposneData[0]) : reject(false);
        
       }
     });
@@ -60,4 +60,30 @@ const authenticateUser = (param) => {
   // }
 };
 
-module.exports = authenticateUser;
+const getDetails = (param) => {
+  return new Promise((resolve, reject) => {
+    let authQuery = `SELECT * FROM employees WHERE employeeNumber = ?`;
+    const EmpQueryParam = [param.empCode]; //EmpQueryParam
+    connection.query(authQuery, EmpQueryParam, (error, returnData, fields) => {
+      if (error) {
+        reject(error);
+      } else {
+        let resposneData = [];
+
+        resolve(returnData[0]);
+        if (returnData.length == 1 && Array.isArray(returnData)) {
+          let val = Object.values(JSON.parse(JSON.stringify(returnData)));
+          for (let index = 0; index < val.length; index++) {
+            resposneData.push(val[index]);
+          }
+        }
+        resposneData.length > 0 ? resolve(resposneData[0]) : reject(false);
+      }
+    });
+  });
+};
+
+module.exports = {
+  authenticateUser,
+  getDetails
+};
