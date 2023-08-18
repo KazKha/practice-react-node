@@ -20,19 +20,7 @@ const ValidateMobiles = (Mobile) => {
 const ValidateName = (Name) => {
   if (!onlyChar.test(Name)) return false;
 };
-const checkAlreadyExist = (tables , fieldsName , condition) => {
 
-  var authQuery = `SELECT ${feildsName} FROM ${tables} `;
-   if(condition){
-    authQuery += `WHERE ${condition}`;  
-   }
-  console.log(authQuery)
-  connection.query(authQuery,  (error, returnData, fields) => {
-    
-    console.log(returnData);
-  
-  });
-};
 
 const apiResponseMessage = (resMsg, fieldName) => {
   const messege = {
@@ -50,6 +38,8 @@ const apiResponseMessage = (resMsg, fieldName) => {
     '112': "Invalid Emp Code Or Worng  Code Enter ",
     '113': "Invalid Token entered",
     '114': `${fieldName} is mandatery`,
+    '115': `Entered Email-ID Or Mobiles Already exist`,
+    '116': `Details are updated`,
     
     
     'ERR': "Something Went Wrong",
@@ -67,5 +57,5 @@ module.exports = {
   apiResponseMessage,
   ValidateEmpCode,
   ValidateMobiles,
-  checkAlreadyExist
+  
 };

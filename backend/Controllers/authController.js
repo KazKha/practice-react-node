@@ -14,15 +14,15 @@ const {
 const login = async (req, res) => {
   let apiRes ={};
   try {
-    if (ValidateEmail(req.body.testapp.email) == false) {
+    const bodyReq = req.body;
+    if (ValidateEmail(bodyReq.email) == false) {
       apiRes.message = apiResponseMessage("101");
       return res.status(400).send({ apiRes });
     }
-    if (ValidateEmpCode(req.body.testapp.empCode) == false) {
+    if (ValidateEmpCode(bodyReq.empCode) == false) {
       apiRes.message = apiResponseMessage("112");
       return res.status(400).send({ apiRes });
     }
-    const bodyReq = req.body.testapp;
     
     const useAuthentication = await authenticateUser(bodyReq);
     
@@ -57,11 +57,12 @@ const login = async (req, res) => {
 const getUserDetails = async (req, res) => {
   let apiRes ={};
   try {
-    if (ValidateEmpCode(req.empCode) == false) {
+    const bodyReq = req.body;
+    if (ValidateEmpCode(bodyReq.empCode) == false) {
       apiRes.message = apiResponseMessage("112");
       return res.status(400).send({ apiRes });
     }
-    const userInfo = await getDetails(req);
+    const userInfo = await getDetails(bodyReq);
     if (typeof userInfo === `object`) {
       apiRes.status = "sucess";
       apiRes.message = apiResponseMessage("S");

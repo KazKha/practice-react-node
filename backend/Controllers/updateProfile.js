@@ -1,4 +1,5 @@
-const { saveUpdate } = require("../Model/userModel");
+const { saveUpdate, checkAlreadyExist } = require("../Model/userModel");
+const xss = require("xss");
 
 const {
   ValidateEmail,
@@ -6,28 +7,51 @@ const {
   apiResponseMessage,
   ValidateEmpCode,
   ValidateMobiles,
-  checkAlreadyExist
 } = require("../utils/ReqValidation");
 
 const updateDetails = async (req, res) => {
-  let apiRes = { code : 400};
-  const bodyReq = req.body.testapp;
+  let apiRes = { code: 400 };
+  const bodyReq = req.body;
   try {
-    checkAlreadyExist( tables = 'employees', feildsName = '*', condition = `email = '${bodyReq.email}'`)
-    checkAlreadyExist( tables = 'employees', feildsName = '*', condition = `mobile = '${bodyReq.mobile}'`)
+ 
+    let firstName = xss(bodyReq.firstName);
+    let lastName  = xss(bodyReq.lastName);
+    let email     = xss(bodyReq.email);
+    let mobile    = xss(bodyReq.mobile);
+    let jobTitle  = xss(bodyReq.jobTitle);
 
-    if ( ValidateName(bodyReq.firstName) == false ) {
+    //// Checking EmailId Or Mobile Exist ////
+    // let CheckEmailExist = await checkAlreadyExist(
+    //   (tables = "employees"),
+    //   (feildsName = "*"),
+    //   (condition = `email = '${bodyReq.email}'`)
+    // );
+    let CheckMobExist = await checkAlreadyExist(
+      (tables = "employees"),
+      (feildsName = "*"),
+      (condition = `mobile = '${bodyReq.mobile}'`)
+    );
+
+    if ( CheckMobExist) {
+      //CheckEmailExist ||
+      apiRes.message = apiResponseMessage("115");
+      return res.status(400).send({ apiRes });
+    }
+    //// Checking EmailId Or Mobile Exist ////
+
+    if (ValidateName(bodyReq.firstName) == false) {
       apiRes.message = apiResponseMessage("105");
       return res.status(400).send({ apiRes });
     }
-    if ( ValidateName(bodyReq.lastName) == false ) {
+
+    if (ValidateName(bodyReq.lastName) == false) {
       apiRes.message = apiResponseMessage("105");
       return res.status(400).send({ apiRes });
     }
-    if (ValidateEmail(bodyReq.email) == false) {
-      apiRes.message = apiResponseMessage("101");
-      return res.status(400).send({ apiRes });
-    }
+    // if (ValidateEmail(bodyReq.email) == false) {
+    //   apiRes.message = apiResponseMessage("101");
+    //   return res.status(400).send({ apiRes });
+    // }
     if (ValidateMobiles(bodyReq.mobile) == false) {
       apiRes.message = apiResponseMessage("110");
       return res.status(400).send({ apiRes });
@@ -37,30 +61,30 @@ const updateDetails = async (req, res) => {
       return res.status(400).send({ apiRes });
     }
 
-    // const useAuthentication = await authenticateUser(bodyReq);
+    let fieldsToUpdate = ``;
+    if (firstName) fieldsToUpdate += `firstName = '${firstName}', `;
+    if (lastName) fieldsToUpdate += `lastName = '${lastName}', `;
+    if (mobile) fieldsToUpdate   += `mobile = '${mobile}', `;
+    if (jobTitle) fieldsToUpdate += `jobTitle = '${jobTitle}' `;
 
-    // if (typeof useAuthentication === `object`) {
-    //   const payload = {
-    //     name: useAuthentication.firstName + " " + useAuthentication.lastName,
-    //     email: useAuthentication.email,
-    //     empCode: useAuthentication.employeeNumber,
-    //   };
-    //   let tokenKey = jwt.sign(payload, secretKey, {
-    //     algorithm: "HS256",
-    //     expiresIn: "1m",
-    //   });
-    //   apiRes.status = "sucess";
-    //   apiRes.message = apiResponseMessage("108");
-    //   apiRes.code = 200;
-    //   apiRes.data = useAuthentication;
-    //   apiRes.tokenKey = tokenKey;
-    //   return res.status(200).json({ apiRes });
-    // }
+    let whereQuery = ` employeeNumber = ${bodyReq.empCode}`;
+
+    const updateUser = await saveUpdate(
+      (tableName = "employees"),
+      fieldsToUpdate,
+      whereQuery
+    );
+
+    if( updateUser ){
+      apiRes.status = "sucess";
+      apiRes.message = apiResponseMessage("116");
+      apiRes.code = 200;
+      return res.status(200).json({ apiRes });
+    }
     apiRes.message = apiResponseMessage("107");
     return res.status(500).send({ apiRes });
   } catch (error) {
-    console.log("----->");
-    console.log(error);
+  
     apiRes.message = apiResponseMessage("ERR");
     return res.status(500).send({ apiRes });
   }

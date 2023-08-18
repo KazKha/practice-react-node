@@ -29,7 +29,7 @@ const verifyToken = (req, res, next) => {
          apiRes.code = 401 ;
          return res.status(401).send({ apiRes });
         }
-       req.empCode = decoded.empCode;
+       req.body.empCode = decoded.empCode;
         next();
       }
       );
