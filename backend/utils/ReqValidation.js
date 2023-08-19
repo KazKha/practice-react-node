@@ -43,6 +43,7 @@ const apiResponseMessage = (resMsg, fieldName) => {
     
     
     'ERR': "Something Went Wrong",
+    'DNF': "Data Not Found",
     'AUTH': "Invalld Authorization",
     'F': "Failed",
     'S': "Success",
