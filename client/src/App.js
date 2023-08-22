@@ -7,6 +7,7 @@ import AboutUs from "./Components/AboutUs";
 import MainPage from "./Components/MainPage";
 import ContactUs from "./Components/ContactUs";
 import UserDetails from "./Components/UserDetails";
+import SignIn from "./Components/SignIn";
 
 
 const appContext = createContext();
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/user-detail/:id" element={<UserDetails />} />
         
         <Route exact path="/Contact-us" element={<ContactUs />} />
+        <Route exact path="/sign-in" element={<SignIn />} />
         <Route exact path="/" element={<MainPage />} />
       </Routes>
     </appContext.Provider>

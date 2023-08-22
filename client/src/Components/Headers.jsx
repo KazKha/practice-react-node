@@ -13,12 +13,13 @@ function Headers() {
     <div className = 'header-sections'>
       <div  className = 'nav-bar'>
 
-        < NavLink style ={navLinkStyles} to = "/" >CompanyLogosssss</NavLink>
+        < NavLink style ={navLinkStyles} to = "/" >CompanyLogo</NavLink>
           
         < NavLink style = {navLinkStyles} to ="/"> Home</NavLink>
         < NavLink style = {navLinkStyles} to ="/user-listing"> User List</NavLink>
         < NavLink style = {navLinkStyles} to ="/about-us"> About</NavLink>
         < NavLink style = {navLinkStyles} to ="/Contact-us"> Contact</NavLink>
+        < NavLink style = {navLinkStyles} to ="/sign-in"> Sign-In</NavLink>
       </div>
     </div>
   )

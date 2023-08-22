@@ -1,0 +1,21 @@
+.signIn_blog   span{
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+}
+#SignIn {
+    border: 1px solid #0b5581;
+    background-color: #61dafb;
+    font-size: 16px;
+    color: black;
+    border-radius: 25px;
+    padding: 5px 35px;
+    margin: 10px;
+      
+
+}

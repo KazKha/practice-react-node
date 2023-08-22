@@ -16,7 +16,6 @@ const UserDetails = () => {
           )
           .then((response) => {
             setSingleData( response.data );
-           
           });
           document.title = 'User-Detail';
 

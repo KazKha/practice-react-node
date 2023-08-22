@@ -12,7 +12,7 @@ const {
 } = require("../utils/ReqValidation");
 
 const login = async (req, res) => {
-  let apiRes ={};
+  let apiRes ={ code : '400' , status:'fail'};
   try {
     const bodyReq = req.body;
     if (ValidateEmail(bodyReq.email) == false) {
@@ -44,7 +44,7 @@ const login = async (req, res) => {
       return res.status(200).json({ apiRes });
     }
     apiRes.message = apiResponseMessage("107");
-    return res.status(500).send({ apiRes });
+    return res.status(400).send({ apiRes });
     
   } catch (error) {
     console.log("----->");
