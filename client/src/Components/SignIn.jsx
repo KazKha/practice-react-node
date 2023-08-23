@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "../assets/login.css";
+
 import axios from "axios";
+import { validateEmail, ValidateEmpCode } from "../helper/Vaildations";
+
+ import {  useHistory } from "react-router-dom";
 
 const SignIn = () => {
   const [postData, setPostData] = useState({
@@ -8,33 +12,48 @@ const SignIn = () => {
     email: "",
   });
 
-  
+  const [errMsg, setErrMsg] = useState({
+    empCode: "",
+    email: "",
+  });
 
-  const loginIn =   () => {
-    const apiUrl = 'http://localhost:3001/api/login';
+  const loginIn = (e) => {
+    e.preventDefault();
+    const history = useHistory();
+    const newErrors = {};
 
-    const headers = {
-        "Content-Type": "application/json", 
-        "Access-Control-Allow-Headers": "*",
+    if (!postData.empCode) newErrors.empCode = `EmpCode is required`;
+    if (!ValidateEmpCode(Number(postData.empCode)))
+      newErrors.empCode = `EmpCode  is required`;
+
+    if (!validateEmail(postData.email)) newErrors.email = `Email is required`;
+
+    setErrMsg(newErrors);
+
+    if ( Object.keys(newErrors).length === 0 ) {
+      const apiUrl = "http://localhost:3300/api/login";
+      const headers = {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*" 
-    };
-
-    // useEffect(() => {
-
-        axios.post(apiUrl , JSON.stringify(postData) ,  {headers} )
-        .then((req) => {
-            console.log(req.data);
-        })
-        .catch((error) => {
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      };
+       //useEffect(() => {
+        axios
+          .post(apiUrl, postData, { headers })
+          .then((response) => {
+            console.log(response.status);
+            const res = response.data.apiRes;
+            if (res && res.status === "fail") {
+              console.log(res);
+            }
+            localStorage.setItem("__token", JSON.stringify(res.tokenKey));
+            history.push('/user-listing');
+            
+          })
+          .catch((error) => {
             console.error("Error posting data:", error.message);
-        });
-
-    // }, [] );
-
-
-
-    
+          });
+      //}, [] );
+    }
   };
 
   const storeInputValue = (e) => {
@@ -69,6 +88,7 @@ const SignIn = () => {
           placeholder="Emp Code"
           onChange={storeInputValue}
         />
+        {errMsg.empCode && <small className="error">{errMsg.empCode}</small>}
       </div>
 
       <div className="container">
@@ -83,6 +103,7 @@ const SignIn = () => {
           placeholder="Email"
           onChange={storeInputValue}
         />
+        {errMsg.email && <small className="error">{errMsg.email}</small>}
       </div>
       <button onClick={loginIn} id="SignIn">
         Login

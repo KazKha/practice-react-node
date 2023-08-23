@@ -12,39 +12,42 @@ const {
 } = require("../utils/ReqValidation");
 
 const login = async (req, res) => {
-  let apiRes ={ code : '400' , status:'fail'};
+  let apiRes ={ code : '0' , status:'fail'};
   try {
     const bodyReq = req.body;
     if (ValidateEmail(bodyReq.email) == false) {
       apiRes.message = apiResponseMessage("101");
-      return res.status(400).send({ apiRes });
+      return res.status(200).send({ apiRes });
     }
     if (ValidateEmpCode(bodyReq.empCode) == false) {
       apiRes.message = apiResponseMessage("112");
-      return res.status(400).send({ apiRes });
+      return res.status(200).send({ apiRes });
     }
     
     const useAuthentication = await authenticateUser(bodyReq);
     
-    if (typeof useAuthentication === `object`) {
+    if ( typeof useAuthentication === `object` ) {
       const payload = {
         name: useAuthentication.firstName + " " + useAuthentication.lastName,
         email: useAuthentication.email,
         empCode: useAuthentication.employeeNumber,
       };
+
       let tokenKey = jwt.sign(payload, secretKey, {
         algorithm: "HS256",
         expiresIn: "20m",
       });
+
       apiRes.status = "sucess";
       apiRes.message = apiResponseMessage("108");
-      apiRes.code = 200;
+      apiRes.code = 1;
       apiRes.data = useAuthentication;
       apiRes.tokenKey = tokenKey;
       return res.status(200).json({ apiRes });
+
     }
     apiRes.message = apiResponseMessage("107");
-    return res.status(400).send({ apiRes });
+    return res.status(200).send({ apiRes });
     
   } catch (error) {
     console.log("----->");
