@@ -19,3 +19,9 @@ label {
       
 
 }
+
+.errMsg {
+    font-size: 14px;
+    color: orangered;
+    font-weight: 600;
+}

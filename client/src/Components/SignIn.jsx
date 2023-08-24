@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../assets/login.css";
 
@@ -13,49 +13,72 @@ const SignIn = () => {
     empCode: "",
     email: "",
   });
-  
+
   const [errMsg, setErrMsg] = useState({
     empCode: "",
     email: "",
+    errorMsg: "",
   });
 
-  
-  const loginIn = (e) => {
+
+
+
+  const loginIn = async  (e) => {
     e.preventDefault();
-   const newErrors = {};
+    const newErrors = {};
 
     if (!postData.empCode) newErrors.empCode = `EmpCode is required`;
     if (!ValidateEmpCode(Number(postData.empCode)))
-      newErrors.empCode = `EmpCode  is required`;
+      newErrors.empCode = ` Invalid EmpCode  `;
 
     if (!validateEmail(postData.email)) newErrors.email = `Email is required`;
 
     setErrMsg(newErrors);
 
-    if ( Object.keys(newErrors).length === 0 ) {
-      const apiUrl = "http://localhost:3300/api/login";
-      const headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      };
-       //useEffect(() => {
-        axios
-          .post(apiUrl, postData, { headers })
-          .then((response) => {
-            console.log(response.status);
-            const res = response.data.apiRes;
-            if (res && res.status === "fail") {
-              console.log(res);
-            }
-             console.log(res)
-            localStorage.setItem("__token", JSON.stringify(res.tokenKey));
-            navigate('/user-listing');
+    if (Object.keys(newErrors).length === 0) {
+        const apiUrl = "http://localhost:3300/api/login";
+        const headers = {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        };
+      
+
+        
+
+      const apiReturn   =  await axios.post(apiUrl, postData, { headers });
+      const apiResposne =  await apiReturn.data.apiRes;
+     
+       if (apiResposne && apiResposne.status === "fail") {
+              newErrors.errorMsg = apiResposne.message
+              setErrMsg(newErrors);
+              
+              console.log(apiResposne);
+              console.log(apiResposne.message);
+  
             
-          })
-          .catch((error) => {
-            console.error("Error posting data:", error.message);
-          });
-      //}, [] );
+            }
+
+      // apiResposne.then((response) => {
+      //     console.log(response.status);
+      //     const res = response.data.apiRes;
+      //     if (res && res.status === "fail") {
+      //       newErrors.errorMsg = res.message
+      //       setErrMsg(newErrors);
+            
+      //       console.log(res );
+      //       console.log(res.message);
+
+          
+      //     }
+      //     console.log(res)
+      //     localStorage.setItem("__token", JSON.stringify(res.tokenKey));
+      //     navigate('/user-listing');
+
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error posting data:", error.message);
+      //   });
+
     }
   };
 
@@ -78,6 +101,7 @@ const SignIn = () => {
     <div className="signIn_blog" style={pageStyle.sign_in_blog}>
       <p> Please Sign-In </p>
       <br />
+      {errMsg.errorMsg && <small className="errMsg">{errMsg.errorMsg}</small >}
 
       <div className="container">
         <label htmlFor="empCode">
