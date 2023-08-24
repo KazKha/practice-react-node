@@ -1,26 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "../assets/login.css";
 
 import axios from "axios";
 import { validateEmail, ValidateEmpCode } from "../helper/Vaildations";
 
- import {  useHistory } from "react-router-dom";
+
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [postData, setPostData] = useState({
     empCode: "",
     email: "",
   });
-
+  
   const [errMsg, setErrMsg] = useState({
     empCode: "",
     email: "",
   });
 
+  
   const loginIn = (e) => {
     e.preventDefault();
-    const history = useHistory();
-    const newErrors = {};
+   const newErrors = {};
 
     if (!postData.empCode) newErrors.empCode = `EmpCode is required`;
     if (!ValidateEmpCode(Number(postData.empCode)))
@@ -45,8 +47,9 @@ const SignIn = () => {
             if (res && res.status === "fail") {
               console.log(res);
             }
+             console.log(res)
             localStorage.setItem("__token", JSON.stringify(res.tokenKey));
-            history.push('/user-listing');
+            navigate('/user-listing');
             
           })
           .catch((error) => {

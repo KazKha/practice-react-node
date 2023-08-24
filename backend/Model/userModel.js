@@ -3,7 +3,7 @@ const { connection, connectionConfig } = require("../utils/mysql_config");
 
 //const mysqlDbConn = mysql.createConnection( connectionConfig );
 
-const authenticateUser = (param) => {
+const authenticateUser = ( param ) => {
   return new Promise((resolve, reject) => {
     let authQuery = `SELECT employeeNumber, firstName, lastName,email FROM employees WHERE email =? and employeeNumber = ?`;
     const EmpQueryParam = [param.email, param.empCode]; //EmpQueryParam
