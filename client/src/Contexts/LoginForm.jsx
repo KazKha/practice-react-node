@@ -1,33 +1,34 @@
-import React , { useState } from "react";
-import "../assets/login.css";
-import axios from "axios";
-import {  LoginApi } from "../helper/Constacts";
+import React ,{ useState } from 'react';
+import { LoginApi } from '../helper/Constacts';
+import { Auth } from './AuthContext';
+import { validateEmail , ValidateEmpCode } from '../helper/Vaildations';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
-import { validateEmail, ValidateEmpCode } from "../helper/Vaildations";
-import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
-    const  navigate = useNavigate()
-    const [loginForm, setLoginForm] = useState({
-        email: "",
-        empCode: "",
+const LoginForm = () => {
+    const  userLogin  = Auth();
+    const navigate = useNavigate()
+    const [loginForm, setLoginForm] = useState( {
+        empCode :'',
+        email :''
     });
 
     const [errMsg, setErrMsg] = useState({
-        errMsgEmail: "",
-        errMsgEmpCode: "",
-        errMsgResponse: "",
+        errEpCode :'',
+        errEmail :'',
+        errResposne :'',
     });
-    const {  empCode, email } = loginForm;
 
+    const {  empCode, email } = loginForm;
+    // adding Forms data 
     const SetHandlerFun = (events) => {
         const { name, value } = events.target;
         setLoginForm({ ...loginForm, [name]: value });
     };
 
-    // validation  Form 
     const formErr = {};
     const  validateForm = async (events) =>{
         events.preventDefault();
@@ -43,6 +44,8 @@ const SignIn = () => {
     }
 
 
+    // Calling Login Api// 
+    
     const loginApiHit = async () => {
         const headers = {
             "Access-Control-Allow-Origin": "*",
@@ -91,7 +94,8 @@ const SignIn = () => {
 
             </form>
         </div>
-    );
-};
+      );
+    
+}
 
-export default SignIn;
+export default LoginForm;

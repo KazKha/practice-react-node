@@ -1,4 +1,4 @@
-import React, { useState,  createContext} from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Headers from "./Components/Headers";
@@ -9,33 +9,30 @@ import ContactUs from "./Components/ContactUs";
 import UserDetails from "./Components/UserDetails";
 import SignIn from "./Components/SignIn";
 import Other from "./Components/Other";
+import { AuthProvider } from "./Contexts/AuthContext";
+import LoginForm from "./Contexts/LoginForm";
+import PrivateRoute from "./Contexts/PrivateRoutes"; //- Assuming this component has not been implemented yet.
 
-
-const appContext = createContext();
 function App() {
-  const [dataId, setdataId] = useState({'listform': 1} );
-
-
   return (
-    <appContext.Provider value={ { data : dataId, updateData : setdataId}}>
-      <Headers />
-
-      <Routes>
-        <Route exact path="/about-us" element={<AboutUs />} />
-        
-          <Route exact path="/user-listing" element={<UserListing />} />
-        
-        <Route exact path="/user-detail/:id" element={<UserDetails />} />
-        
-        <Route exact path="/Contact-us" element={<ContactUs />} />
-        <Route exact path="/sign-in" element={<SignIn />} />
-        <Route exact path="/Other" element={<Other />} />
-        <Route exact path="/" element={<MainPage />} />
-      </Routes>
-    </appContext.Provider>
+    <AuthProvider.Provider >
+      <>
+        <Headers />
+        <Routes>
+          <Route exact path="/about-us" element={<AboutUs />} />
+          <PrivateRoute path="/user-listing" element={<UserListing />} />
+         
+          <PrivateRoute path="/user-detail/:id" element={<UserDetails />} />
+          <Route path="/user-detail/:id" element={<UserDetails />} />
+          <Route exact path="/contact-us" element={<ContactUs />} />
+         
+          <Route exact path="/sign-in" element={<LoginForm />} />
+          <Route exact path="/other" element={<Other />} />
+          <Route exact path="/" element={<MainPage />} />
+        </Routes>
+      </>
+    </AuthProvider.Provider>
   );
 }
 
 export default App;
-export {appContext};
-

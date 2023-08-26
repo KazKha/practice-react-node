@@ -1,17 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
-import { appContext } from "../App";
+
 
 function UserListing() {
-  const dataId = useContext(appContext);
+
   const [userList, setUserList] = useState([]);
+  const [dataId   , setdataId ] = useState({
+    listform :'1'
+  });
   
   useEffect(() => {
     //api with fetch
     async function fectUserData() {
       const fetchData = await fetch(
-         `https://hub.dummyapis.com/employee?noofRecords=100&idStarts=${dataId.data.listform}`
+         `https://hub.dummyapis.com/employee?noofRecords=100&idStarts=1`
       );
       const res = await fetchData.json();
       setUserList(res);
@@ -37,13 +40,13 @@ function UserListing() {
 
   const buttonHalders = (params) => {
     if (params === true) {
-      let incre = dataId.data.listform+100
-      dataId.updateData({...dataId.data, listform: incre });
+      let incre = dataId.listform+100
+      setdataId({...dataId, listform: incre });
       
     } else if (params === false && dataId.data.listform > 0) {
       let decre = dataId.data.listform - 100
 
-      dataId.updateData({...dataId.data, listform : decre});
+      setdataId({...dataId, listform : decre});
     }
   };
 
