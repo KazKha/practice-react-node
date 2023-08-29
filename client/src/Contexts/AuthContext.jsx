@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from "react";
 
-export const AuthContext = createContext();
+ const AuthContext = createContext();
 
-export const AuthProvider =  ({ child  }) => {
+ const AuthProvider =  ({ child  }) => {
     
     const [data, setData] = useState({
         listform: 1,
@@ -26,6 +26,12 @@ export const AuthProvider =  ({ child  }) => {
 };
 
 
- export const Auth = () => useContext(AuthContext);
- 
 
+ const Auth = () => useContext(AuthContext);
+ 
+ export  {
+    AuthContext,
+    AuthProvider,
+    Auth
+  };
+  

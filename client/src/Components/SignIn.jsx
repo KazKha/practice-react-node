@@ -1,15 +1,19 @@
-import React , { useState } from "react";
+import React , { useContext, useState } from "react";
 import "../assets/login.css";
 import axios from "axios";
 import {  LoginApi } from "../helper/Constacts";
-
-
-
 import { validateEmail, ValidateEmpCode } from "../helper/Vaildations";
 import { useNavigate } from "react-router-dom";
+import { appContext } from "../App";
+
 
 const SignIn = () => {
     const  navigate = useNavigate()
+    const  dataId = useContext(appContext);
+    const IsSession = JSON.parse(sessionStorage.getItem('items'));
+
+    IsSession  ? dataId.setdataId( {...dataId.dataId , islogin : true} ) :'';
+
     const [loginForm, setLoginForm] = useState({
         email: "",
         empCode: "",
@@ -55,6 +59,7 @@ const SignIn = () => {
             setErrMsg( formErr );
             return false
         }
+        dataId.setdataId( {...dataId.dataId , islogin : true} )
         sessionStorage.setItem("items", JSON.stringify(apiResposne.tokenKey));
         navigate('/user-listing');
         console.log(apiResposne)
