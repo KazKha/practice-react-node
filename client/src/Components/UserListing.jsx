@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useContext, useEffect  } from "react";
 import axios from "axios";
-import { ListOfUser } from "../helper/Constacts";
+import { ListOfUser, LoginApi } from "../helper/Constacts";
 import { Link, useNavigate } from "react-router-dom";
 import { appContext } from "../App";
 
 function UserListing() {
-    const dataId = useContext(appContext);
-    dataId.dataId.islogin == true && navigate("/sign-in");
-    const navigate = useNavigate();
-
-
-    console.log(ListOfUser);
+    const navigate  = useNavigate();
+    const dataId    = useContext(appContext);
     const [userList, setUserList] = useState([]);
+    const [errMrsg, setErrMrsg] = useState("");
+    const [paging,  setPaging]  = useState({
+        'pre' : 0,
+        'next' : 0
+    });
+    dataId.dataId.islogin === false && navigate("/sign-in");
     const authToken = JSON.parse(sessionStorage.getItem("items"));
 
     const headers = {
@@ -23,26 +25,29 @@ function UserListing() {
     useEffect(() => {
         //api with fetch
         async function fectUserData() {
-            const fetchData = await fetch(ListOfUser, {
-                method: "GET",
-                headers: headers,
-            });
-            const res = await fetchData.json();
+            var pre , nex ;
+            const apiReturn = await axios.get(ListOfUser, { headers });
+            const apiResposne = await apiReturn.data.apiRes;
+             
+             console.log(apiResposne);  
+             if (apiResposne.status === "fail") {
+                 Number(apiResposne.code) === 401
+                 ? dataId.setdataId({
+                     ...dataId.dataId,
+                     errMsg: apiResposne.message,
+                    })
+                    : setErrMrsg(apiResposne.message);
+                }
+                pre =  apiResposne.pageno - 1;
+                nex =  apiResposne.pageno ;
+                setPaging({...paging , pre : pre})
+                setPaging({...paging,next :   nex} )
+                setUserList(apiResposne.data);
+            }
 
-            console.log(res);
-            setUserList(res);
-        }
-        fectUserData();
-        // axios
-        //   .get(
-        //     `https://hub.dummyapis.com/employee?noofRecords=100&idStarts=${inputval.current}`
-        //   )
-        //   .then((response) => {
-        //     setUserList(response.data);
-        //     console.log(response.data);
-        //     document.title = ` ${response.data.length}  records `;
-        //   });
-    }, [authToken]);
+            fectUserData();
+        
+    }, [ ]);
 
     const buttonHalders = (params) => {
         if (params === true) {
@@ -64,9 +69,7 @@ function UserListing() {
     return (
         <div className="App">
             <button
-                onClick={() => {
-                    buttonHalders(false);
-                }}
+                onClick={() =>  {paging.pre > 0 &&  setPaging({...paging , pre : paging.pre++})}}
             >
                 Prev page
             </button>
@@ -84,15 +87,16 @@ function UserListing() {
 
             <div>
                 <h2> User Records </h2>
+                <br/>
+                <br/>
+                {errMrsg && <small className="errMsg">{errMrsg}</small >}
                 <table>
                     <thead>
                         <tr>
                             <th> Srno </th>
                             <th> Name </th>
                             <th> Email </th>
-                            <th> Phone </th>
-                            <th> Dob </th>
-                            <th> Age </th>
+                            <th> Title </th>
                             <th> Action </th>
                         </tr>
                     </thead>
@@ -100,19 +104,18 @@ function UserListing() {
                         {userList.map((item, index) => {
                             return (
                                 <tr key={index}>
-                                    <td> {item.id}</td>
+                                    <td> {item.employeeNumber}</td>
                                     <td>
-                                        <Link to={`/user-detail/:${item.id}`}>
+                                        <Link to={`/user-detail/:${item.employeeNumber}`}>
                                             {item.firstName} {item.lastName}
                                         </Link>
                                     </td>
                                     <td> {item.email} </td>
-                                    <td> {item.contactNumber} </td>
-                                    <td> {item.dob} </td>
-                                    <td> {item.age} </td>
+                                    <td> {item.jobTitle} </td>
+                                   
                                     <td>
                                         <Link
-                                            to={`/user-detail/:${item.id}`}
+                                            to={`/user-detail/:${item.employeeNumber}`}
                                             className="button"
                                         >
                                             <span>View Record </span>
@@ -128,9 +131,7 @@ function UserListing() {
                             <th> Srno </th>
                             <th> Name </th>
                             <th> Email </th>
-                            <th> Phone </th>
-                            <th> Dob </th>
-                            <th> Age </th>
+                            <th> Title </th>
                             <th> Action </th>
                         </tr>
                     </tfoot>

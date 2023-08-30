@@ -6,7 +6,7 @@ import { useContext } from "react";
 function Headers() {
      
     const dataId = useContext(appContext)
-     console.log( dataId.dataId );
+  
     const navLinkStyles = ({ isActive }) => {
         return {
             fontWeight: isActive ? "bold" : "normal",

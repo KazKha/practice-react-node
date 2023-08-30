@@ -17,6 +17,8 @@ const appContext = createContext();
         const [dataId, setdataId] = useState(
             {
                 'listform': 1,
+                'errMsg': '',
+                'sucMsg': '',
                 'islogin' : false
             }
 
@@ -31,7 +33,7 @@ const appContext = createContext();
                     <Route exact path="/about-us" element={<AboutUs />} />
                     <Route exact path="/user-listing" element={<UserListing />} />
                     <Route exact path="/user-detail/:id" element={<UserDetails />} />
-                    <Route path="/user-detail/:id" element={<UserDetails />} />
+                    
                     <Route exact path="/contact-us" element={<ContactUs />} />
 
                     <Route exact path="/sign-in" element={<SignIn />} />

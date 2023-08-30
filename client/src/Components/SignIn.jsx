@@ -12,7 +12,7 @@ const SignIn = () => {
     const  dataId = useContext(appContext);
     const IsSession = JSON.parse(sessionStorage.getItem('items'));
 
-    IsSession  ? dataId.setdataId( {...dataId.dataId , islogin : true} ) :'';
+   // IsSession  ? dataId.setdataId( {...dataId.dataId , islogin : true} ) :'';
 
     const [loginForm, setLoginForm] = useState({
         email: "",
