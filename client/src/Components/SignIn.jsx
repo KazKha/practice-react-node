@@ -9,8 +9,9 @@ import { appContext } from "../App";
 
 const SignIn = () => {
     const  navigate = useNavigate()
-    const  dataId = useContext(appContext);
+    const  dataId   = useContext(appContext);
     const IsSession = JSON.parse(sessionStorage.getItem('items'));
+    
 
    // IsSession  ? dataId.setdataId( {...dataId.dataId , islogin : true} ) :'';
 

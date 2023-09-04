@@ -1,11 +1,13 @@
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { appContext } from "../App";
 import { useContext } from "react";
 
 function Headers() {
      
     const dataId = useContext(appContext)
+    const nagivate = useNavigate()
+    console.log(dataId);
   
     const navLinkStyles = ({ isActive }) => {
         return {
@@ -13,6 +15,24 @@ function Headers() {
             textDecoration: isActive ? "none" : "underline",
         };
     };
+
+    const Logout = () => {
+        const result =  window.confirm("Are you sure you want to Logout ?");
+        if (result) {
+            sessionStorage.clear();   
+            dataId.dataId.updateData({
+                ...dataId.dataId.data,
+                islogin:false
+            });
+            nagivate('/sign-in')
+
+        }
+      
+      
+    }
+
+
+
     return (
         <div className="header-sections">
             <div className="nav-bar">
@@ -25,7 +45,7 @@ function Headers() {
                     Home
                 </NavLink>
                
-                { dataId.dataId.listform === true  ? <NavLink style={navLinkStyles} to="/user-listing">
+                { dataId.dataId.islogin === true  ? <NavLink style={navLinkStyles} to="/user-listing">
                     {" "}
                     User List
                 </NavLink> :''}
@@ -37,10 +57,16 @@ function Headers() {
                     {" "}
                     Contact
                 </NavLink>
-                <NavLink style={navLinkStyles} to="/sign-in">
+                { dataId.dataId.islogin === false  ?<NavLink style={navLinkStyles} to="/sign-in">
                     {" "}
                     Sign-In
-                </NavLink>
+                </NavLink> : <NavLink style={navLinkStyles}   onClick={() => {
+                    Logout(true);
+                }}>
+                    {" "}
+                     Logout 
+                </NavLink>}
+                
             </div>
         </div>
     );

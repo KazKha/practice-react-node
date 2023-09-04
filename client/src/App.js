@@ -19,7 +19,9 @@ const appContext = createContext();
                 'listform': 1,
                 'errMsg': '',
                 'sucMsg': '',
-                'islogin' : false
+                'islogin' : false,
+                '__tokenKey' : ''
+
             }
 
         );

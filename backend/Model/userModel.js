@@ -27,9 +27,10 @@ const authenticateUser = ( param ) => {
 };
 
 const getDetails = (param) => {
+  
   return new Promise((resolve, reject) => {
     let authQuery = `SELECT * FROM employees WHERE employeeNumber = ?`;
-    const EmpQueryParam = [param.empCode]; //EmpQueryParam
+    const EmpQueryParam = [param.getDataOf]; //EmpQueryParam
     connection.query(authQuery, EmpQueryParam, (error, returnData, fields) => {
       if (error) {
         reject(error);
@@ -81,7 +82,7 @@ const getAll = (startIndex, endIndex) => {
     let resposneData = [];
     let query = ` SELECT * FROM employees  limit  ${startIndex} , ${endIndex} `;
     //const empQueryParam = [startIndex , endIndex]; //EmpQueryParam
-    console.log(query);
+   
     connection.query(query, (error, returnData, fields) => {
       if (error) reject(error);
       if (returnData.length == 0) resolve([]);

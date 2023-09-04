@@ -1,19 +1,19 @@
-import React, { useState, useContext, useEffect  } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { ListOfUser, LoginApi } from "../helper/Constacts";
 import { Link, useNavigate } from "react-router-dom";
 import { appContext } from "../App";
 
 function UserListing() {
-    const navigate  = useNavigate();
-    const dataId    = useContext(appContext);
+    const navigate = useNavigate();
+    const dataId = useContext(appContext);
     const [userList, setUserList] = useState([]);
     const [errMrsg, setErrMrsg] = useState("");
-    const [paging,  setPaging]  = useState({
-        'pre' : 0,
-        'next' : 0
+    const [paging, setPaging] = useState({
+        pre: 0,
+        next: 0,
     });
-    dataId.dataId.islogin === false && navigate("/sign-in");
+
     const authToken = JSON.parse(sessionStorage.getItem("items"));
 
     const headers = {
@@ -22,32 +22,38 @@ function UserListing() {
         Authorization: `Bearer ${authToken}`,
     };
 
-    useEffect(() => {
-        //api with fetch
-        async function fectUserData() {
-            var pre , nex ;
-            const apiReturn = await axios.get(ListOfUser, { headers });
-            const apiResposne = await apiReturn.data.apiRes;
-             
-             console.log(apiResposne);  
-             if (apiResposne.status === "fail") {
-                 Number(apiResposne.code) === 401
-                 ? dataId.setdataId({
-                     ...dataId.dataId,
-                     errMsg: apiResposne.message,
-                    })
-                    : setErrMrsg(apiResposne.message);
+    try {
+        useEffect(() => {
+            dataId.dataId.islogin === false && navigate("/sign-in");
+            //api with fetch
+            async function fectUserData() {
+                var pre, nex;
+                const apiReturn = await axios.get(ListOfUser, { headers });
+                const apiResposne = await apiReturn.data.apiRes;
+
+                console.log(apiResposne);
+                if (apiResposne.status === "fail") {
+                    Number(apiResposne.code) === 401
+                        ? dataId.setdataId({
+                              ...dataId.dataId,
+                              errMsg: apiResposne.message,
+                          })
+                        : setErrMrsg(apiResposne.message);
                 }
-                pre =  apiResposne.pageno - 1;
-                nex =  apiResposne.pageno ;
-                setPaging({...paging , pre : pre})
-                setPaging({...paging,next :   nex} )
+                pre = apiResposne.pageno - 1;
+                nex = apiResposne.pageno;
+                setPaging({ ...paging, pre: pre });
+                setPaging({ ...paging, next: nex });
                 setUserList(apiResposne.data);
             }
 
             fectUserData();
-        
-    }, [ ]);
+        }, []);
+    } catch (error) {
+        console.log('error', error.message);
+        navigate('/')
+
+    }
 
     const buttonHalders = (params) => {
         if (params === true) {
@@ -68,11 +74,7 @@ function UserListing() {
 
     return (
         <div className="App">
-            <button
-                onClick={() =>  {paging.pre > 0 &&  setPaging({...paging , pre : paging.pre++})}}
-            >
-                Prev page
-            </button>
+            <button onClick={() => {}}>Prev page</button>
 
             <button
                 onClick={() => {
@@ -87,9 +89,9 @@ function UserListing() {
 
             <div>
                 <h2> User Records </h2>
-                <br/>
-                <br/>
-                {errMrsg && <small className="errMsg">{errMrsg}</small >}
+                <br />
+                <br />
+                {errMrsg && <small className="errMsg">{errMrsg}</small>}
                 <table>
                     <thead>
                         <tr>
@@ -106,16 +108,18 @@ function UserListing() {
                                 <tr key={index}>
                                     <td> {item.employeeNumber}</td>
                                     <td>
-                                        <Link to={`/user-detail/:${item.employeeNumber}`}>
+                                        <Link
+                                            to={`/user-detail/${item.employeeNumber}`}
+                                        >
                                             {item.firstName} {item.lastName}
                                         </Link>
                                     </td>
                                     <td> {item.email} </td>
                                     <td> {item.jobTitle} </td>
-                                   
+
                                     <td>
                                         <Link
-                                            to={`/user-detail/:${item.employeeNumber}`}
+                                            to={`/user-detail/${item.employeeNumber}`}
                                             className="button"
                                         >
                                             <span>View Record </span>

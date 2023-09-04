@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { login, getUserDetails } = require("../Controllers/authController");
 const updateProfile = require("../Controllers/updateProfile");
 const allUserListing = require("../Controllers/getAllUser");
+const getDataOfUser = require('../Controllers/getSingleUser')
 const router = express.Router();
 const secretKey = process.env.JWT_SECRET;
 const apiRes = { code: 400, status: "fail" };
@@ -37,6 +38,7 @@ const verifyToken = (req, res, next) => {
 
 router.post("/login", login);
 router.get("/user-detail", verifyToken, getUserDetails);
+router.post("/single-user-detail", verifyToken, getDataOfUser);
 router.post("/update-user", verifyToken, updateProfile);
 router.get("/all-users", verifyToken, allUserListing);
 

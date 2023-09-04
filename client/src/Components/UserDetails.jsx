@@ -1,45 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import {  useParams , useNavigate } from 'react-router-dom';
-
+import { SingleUserDetails } from "../helper/Constacts";
+import { useParams, useNavigate } from "react-router-dom";
+import { appContext } from "../App";
 
 const UserDetails = () => {
-
-    const userId     = useParams();
-    const nagivate   = useNavigate();
-    const [singleData, setSingleData] = useState([])
-    document.title = 'User-Detail';
+    const userId = useParams();
+    const dataId = useContext(appContext);
+    const nagivate = useNavigate();
+    const [singleData, setSingleData] = useState([]);
+    document.title = "User-Detail";
+    const authToken = JSON.parse(sessionStorage.getItem("items"));
+    
+    const req = {
+        getDataOf: userId.id,
+    };
     useEffect(() => {
-        axios
-          .get(
-            `https://hub.dummyapis.com/employee?noofRecords=1&idStarts=${userId.id}`
-          )
-          .then((response) => {
-            setSingleData( response.data );
-          });
-          document.title = 'User-Detail';
+        const getDetails = async () => {
+            const headers = {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods":
+                    "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                Authorization: `Bearer ${authToken}`,
+            };
+            const apiReturn = await axios.post(SingleUserDetails, req, {
+                headers,
+            });
+            const apiResposne = await apiReturn.data.apiRes;
+            if (apiResposne.status === "fail") {
+                return false;
+            }
+            setSingleData(apiResposne.data);
+            console.log(apiResposne.data);
+        };
 
-      }, [userId.id]);
+        getDetails();
+    }, [userId.id]);
     return (
         <div>
-            
-            {
-                singleData.map((items, index) => {
-                    return(<ul key ={index}>
-                        
-                        <li>Name  :  {items.firstName} {items.lastName} </li> 
-                        <li>Email :  {items.email}  </li>
-                        <li>Phone : {items.contactNumber}</li>  
-                        <li>Dob :   {items.dob} </li>
-                        <li> Age :  {items.age}  </li>
-                        </ul>
-                        
-                    )
-                })
-            }
-            <button onClick={() => nagivate(-1)} > Go Back List</button>
+            <ul>
+                <li> EmpCode : {singleData.employeeNumber} </li>
+                <li>
+                    Name : {singleData.firstName} {singleData.lastName}{" "}
+                </li>
+                <li>Email : {singleData.email} </li>
+                <li>Phone : {singleData.extension}</li>
+                <li>jobTitle : {singleData.jobTitle} </li>
+            </ul>
+
+            <button onClick={() => nagivate(-1)}> Go Back List</button>
         </div>
     );
-}
+};
 
 export default UserDetails;
