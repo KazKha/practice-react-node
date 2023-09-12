@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { SingleUserDetails } from "../helper/Constacts";
 import { useParams, useNavigate } from "react-router-dom";
 import { appContext } from "../App";
+ import axios from "axios";
+//import axios from './lib/axios.js'
+
+
 
 const UserDetails = () => {
     const userId = useParams();

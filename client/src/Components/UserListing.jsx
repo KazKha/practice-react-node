@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import axios from "axios";
-import { ListOfUser, LoginApi } from "../helper/Constacts";
+import { ListOfUser } from "../helper/Constacts";
 import { Link, useNavigate } from "react-router-dom";
 import { appContext } from "../App";
+import axios from "axios";
+//import axios from './lib/axios.js'
 
 function UserListing() {
     const navigate = useNavigate();

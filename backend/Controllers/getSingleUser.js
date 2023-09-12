@@ -3,7 +3,7 @@ const xss = require("xss");
 
 const {
  
-  ValidateEmpCode,
+  ValidateEmpCode
 
 } = require("../utils/ReqValidation");
 const { apiResponseMessage } = require("../utils/ReqValidation");

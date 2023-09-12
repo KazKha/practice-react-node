@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
     delete apiRes.data;
     return res.status(403).send({ apiRes });
   }
-  token.replace("Bearer", "");
+  
 
   jwt.verify(
     token.replace("Bearer", "").trim(),
