@@ -25,10 +25,7 @@ function Headers() {
                 islogin:false
             });
             nagivate('/sign-in')
-
         }
-      
-      
     }
 
 

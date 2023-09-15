@@ -14,11 +14,19 @@ const UserDetails = () => {
     const [singleData, setSingleData] = useState([]);
     document.title = "User-Detail";
     const authToken = JSON.parse(sessionStorage.getItem("items"));
-    
+
+     console.log(JSON.parse(sessionStorage.getItem("items")));
+      
+  
+
+   
+
     const req = {
         getDataOf: userId.id,
     };
     useEffect(() => {
+
+       
         const getDetails = async () => {
             const headers = {
                 "Access-Control-Allow-Origin": "*",
@@ -37,8 +45,8 @@ const UserDetails = () => {
             console.log(apiResposne.data);
         };
 
-        getDetails();
-    }, [userId.id]);
+        authToken != null ?  getDetails() : nagivate('/sign-in');
+    }, [userId]);
     return (
         <div>
             <ul>

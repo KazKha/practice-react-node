@@ -14,7 +14,7 @@ const allUserListing = async (req, res) => {
       apiRes.status = "sucess";
       apiRes.message = apiResponseMessage("108");
       apiRes.code = 200;
-      apiRes.pageno = page + 1;
+      apiRes.pageno = page ;
       apiRes.data = usersList;
       return res.status(200).json({ apiRes });
     }

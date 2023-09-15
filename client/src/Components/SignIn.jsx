@@ -61,6 +61,10 @@ const SignIn = () => {
             return false
         }
         dataId.setdataId( {...dataId.dataId , islogin : true} )
+
+        sessionStorage.setItem("expirationTime", new Date(Date.now() + 1200000)); // 20 min
+
+
         sessionStorage.setItem("items", JSON.stringify(apiResposne.tokenKey));
         navigate('/user-listing');
         console.log(apiResposne)
