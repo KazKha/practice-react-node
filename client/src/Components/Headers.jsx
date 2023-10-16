@@ -1,13 +1,14 @@
 
 import { NavLink, useNavigate } from "react-router-dom";
-import { appContext } from "../App";
 import { useContext } from "react";
+import { StateContext } from "../Contexts/ContextStateManage";
 
 function Headers() {
+    const nagivate = useNavigate();
      
-    const dataId = useContext(appContext)
-    const nagivate = useNavigate()
-    console.log(dataId);
+    //const dataId = useContext(appContext)
+    const { state, dispatch }  = useContext(StateContext)
+    console.log(state);
   
     const navLinkStyles = ({ isActive }) => {
         return {
@@ -17,14 +18,17 @@ function Headers() {
     };
 
     const Logout = () => {
+       
         const result =  window.confirm("Are you sure you want to Logout ?");
         if (result) {
             sessionStorage.clear();   
-            dataId.dataId.updateData({
-                ...dataId.dataId.data,
-                islogin:false
-            });
-            nagivate('/sign-in')
+            // dataId.dataId.updateData({
+            //     ...dataId.dataId.data,
+            //     islogin:false
+            // });
+            nagivate('/sign-in');
+            sessionStorage.removeItem("items");
+            dispatch({ type: 'LOGOUT' });
         }
     }
 
@@ -42,7 +46,7 @@ function Headers() {
                     Home
                 </NavLink>
                
-                { dataId.dataId.islogin === true  ? <NavLink style={navLinkStyles} to="/user-listing">
+                { state.islogin === true  ? <NavLink style={navLinkStyles} to="/user-listing">
                     {" "}
                     User List
                 </NavLink> :''}
@@ -54,7 +58,13 @@ function Headers() {
                     {" "}
                     Contact
                 </NavLink>
-                { dataId.dataId.islogin === false  ?<NavLink style={navLinkStyles} to="/sign-in">
+
+                { state.islogin === true  ? <NavLink style={navLinkStyles} to="/profile">
+                    Profile
+                </NavLink> :''}
+
+
+                { state.islogin === false  ?<NavLink style={navLinkStyles} to="/sign-in">
                     {" "}
                     Sign-In
                 </NavLink> : <NavLink style={navLinkStyles}   onClick={() => {

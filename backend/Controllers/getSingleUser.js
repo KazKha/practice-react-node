@@ -18,7 +18,7 @@ const getDataOfUser = async (req, res) => {
         return res.status(400).send({ apiRes });
       }
       const userInfo = await getDetails(bodyReq);
-      console.log(userInfo);
+      
       if (typeof userInfo === `object`) {
         apiRes.status = "sucess";
         apiRes.message = apiResponseMessage("S");

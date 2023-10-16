@@ -4,12 +4,17 @@ import axios from "axios";
 import {  LoginApi } from "../helper/Constacts";
 import { validateEmail, ValidateEmpCode } from "../helper/Vaildations";
 import { useNavigate } from "react-router-dom";
-import { appContext } from "../App";
+import { StateContext } from "../Contexts/ContextStateManage";
+// import { appContext } from "../App_withoutContextApi";
+
+  
+
 
 
 const SignIn = () => {
     const  navigate = useNavigate()
-    const  dataId   = useContext(appContext);
+    // const  dataId   = useContext(appContext);
+    const { state, dispatch } = useContext(StateContext);
     const IsSession = JSON.parse(sessionStorage.getItem('items'));
     
 
@@ -52,6 +57,7 @@ const SignIn = () => {
         const headers = {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          
         };
         const apiReturn   =  await axios.post(LoginApi, loginForm, { headers });
         const apiResposne =  await apiReturn.data.apiRes;
@@ -60,8 +66,12 @@ const SignIn = () => {
             setErrMsg( formErr );
             return false
         }
-        dataId.setdataId( {...dataId.dataId , islogin : true} )
 
+        dispatch({ type: 'LOGIN', payload: {token:  apiResposne.tokenKey } });
+
+        //dataId.setdataId( {...dataId.dataId , '__tokenKey' : apiResposne.tokenKey , 'islogin' : true  } )
+        
+        // dataId.setdataId( {...dataId.dataId , 'islogin' : true } );
         sessionStorage.setItem("expirationTime", new Date(Date.now() + 1200000)); // 20 min
 
 

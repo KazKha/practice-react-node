@@ -1,25 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import { SingleUserDetails } from "../helper/Constacts";
 import { useParams, useNavigate } from "react-router-dom";
-import { appContext } from "../App";
+  
  import axios from "axios";
+import { StateContext } from "../Contexts/ContextStateManage";
 //import axios from './lib/axios.js'
 
 
 
 const UserDetails = () => {
     const userId = useParams();
-    const dataId = useContext(appContext);
+    const { state } = useContext(StateContext);
     const nagivate = useNavigate();
     const [singleData, setSingleData] = useState([]);
     document.title = "User-Detail";
-    const authToken = JSON.parse(sessionStorage.getItem("items"));
+    
+    const authToken = (  state.__tokenKey !== ''  && state.islogin === true ) ? state.__tokenKey : null; 
 
-     console.log(JSON.parse(sessionStorage.getItem("items")));
-      
-  
 
-   
 
     const req = {
         getDataOf: userId.id,
