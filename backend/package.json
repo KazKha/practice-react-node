@@ -24,6 +24,7 @@
     "express-session": "^1.17.3",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.1",
+    "memory-cache": "^0.2.0",
     "mysql": "^2.18.1",
     "nodemon": "^3.0.1",
     "xss": "^1.0.14"

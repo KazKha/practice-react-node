@@ -8,15 +8,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 
- 
-
-
 const Profile = () => {
     const navigate=  useNavigate();
     const { state }  = useContext(StateContext);    
-    
     const [ userData, setUserData] = useState('');
-    
+
     document.title = "Profile";
     const authToken  = (  state.__tokenKey !== ''  && state.islogin === true ) ? state.__tokenKey : null; 
      
@@ -27,16 +23,18 @@ const Profile = () => {
                 "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
                 Authorization: `Bearer ${authToken}`,
             };
-            const decode = jwt_decode( authToken );
+            
             const req = {
-                getDataOf: decode.empCode
+                getDataOf: state.loginId
             };
             const apiReturn  =  await axios.post(SingleUserDetails, req, { headers } );
             const apiResp    =  await apiReturn.data.apiRes;
             if (apiResp.status === "fail") {
                 return false;
             }
+           
             setUserData(apiResp.data);
+          
            
         }
         authToken === null ? navigate('/sign-in') : getPersonlData();       

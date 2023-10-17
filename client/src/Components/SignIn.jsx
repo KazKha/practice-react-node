@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { StateContext } from "../Contexts/ContextStateManage";
 // import { appContext } from "../App_withoutContextApi";
 
-  
-
 
 
 const SignIn = () => {
@@ -16,8 +14,6 @@ const SignIn = () => {
     // const  dataId   = useContext(appContext);
     const { state, dispatch } = useContext(StateContext);
     const IsSession = JSON.parse(sessionStorage.getItem('items'));
-    
-
    // IsSession  ? dataId.setdataId( {...dataId.dataId , islogin : true} ) :'';
 
     const [loginForm, setLoginForm] = useState({
@@ -67,7 +63,7 @@ const SignIn = () => {
             return false
         }
 
-        dispatch({ type: 'LOGIN', payload: {token:  apiResposne.tokenKey } });
+        dispatch({ type: 'LOGIN', payload: {token:  apiResposne.tokenKey, loginId:  apiResposne.data.employeeNumber } });
 
         //dataId.setdataId( {...dataId.dataId , '__tokenKey' : apiResposne.tokenKey , 'islogin' : true  } )
         

@@ -2,21 +2,24 @@ import React, { useReducer, useContext, createContext } from "react";
 
 const initialState = {
     listform: 1,
-    errMsg: "",
-    sucMsg: "",
+    errMsg: null,
+    sucMsg: null,
     islogin: false,
-    __tokenKey: "",
+    __tokenKey: null,
+    loginId: null,
 };
 
-console.log(sessionStorage.getItem("items"));
+//sessionStorage.getItem("items") === true ?    initialState.__tokenKey =sessionStorage.getItem("items"):'';
 
 
 const stateReducers = (initialState, action) => {
     if (action.type === "LOGIN") {
-        return { ...initialState, __tokenKey: action.payload.token, islogin: true };
+        return { ...initialState, __tokenKey: action.payload.token,loginId: action.payload.loginId, islogin: true };
     }else if ( action.type === 'LOGOUT'){
-        return { ...initialState, __tokenKey: "", islogin: false };
+        sessionStorage.removeItem('items')
+        return { ...initialState, __tokenKey: null, loginId:null, islogin: false };
     }else if ( action.type === 'ERR'){
+
         return { ...initialState, errMsg: action.payload.err_msg  };
     }else{
         return initialState;
