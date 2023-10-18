@@ -15,6 +15,11 @@ const validateNumber = (value) => {
   return numberPattern.test(value);
 };
 
+const OnlyChar = (value) => {
+    const OnlyCharater = /^[a-zA-Z ]+$/;
+    return OnlyCharater.test(value);
+};
+
 const apiResponseMessage = (resMsg, fieldName) => {
   const messege = {
     101: "Invalid Email Id",
@@ -47,5 +52,6 @@ export  {
   validateEmail,
   apiResponseMessage,
   ValidateEmpCode,
-  validateNumber
+  validateNumber,
+  OnlyChar
 };

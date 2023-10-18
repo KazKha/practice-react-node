@@ -57,6 +57,7 @@ const checkAlreadyExist = (tables, fieldsName, condition) => {
             authQuery += `WHERE ${condition}`;
         }
         connection.query(authQuery, (error, returnData, fields) => {
+             
             returnData.length > 1 ? resolve(true) : resolve(false);
         });
     });
